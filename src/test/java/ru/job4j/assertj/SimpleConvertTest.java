@@ -42,9 +42,7 @@ class SimpleConvertTest {
                 .hasSize(7)
                 .contains("six")
                 .containsAnyOf("true", "1", "-", "four")
-                .doesNotContain("where")
-                .startsWith("zero")
-                .endsWith("six");
+                .doesNotContain("where");
     }
 
     @Test
