@@ -19,9 +19,6 @@ public class BackwardArrayIt implements Iterator<Integer> {
 
     @Override
     public Integer next() {
-        if (data.length == 0) {
-            throw new NoSuchElementException();
-        }
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
