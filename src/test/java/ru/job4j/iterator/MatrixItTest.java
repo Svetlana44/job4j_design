@@ -30,7 +30,8 @@ class MatrixItTest {
     @Test
     void whenFirstEmptyThenHashNext() {
         int[][] in = {
-                {}, {1}
+                {},
+                {1}
         };
         MatrixIt it = new MatrixIt(in);
         assertThat(it.hasNext()).isTrue();
@@ -92,7 +93,9 @@ class MatrixItTest {
     @Test
     void whenNoElements() {
         int[][] in = {
-                {}, {}, {}
+                {},
+                {},
+                {}
         };
         MatrixIt it = new MatrixIt(in);
         assertThat(it.hasNext()).isFalse();
