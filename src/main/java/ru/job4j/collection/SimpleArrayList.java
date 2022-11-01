@@ -45,7 +45,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
                 index, /* начиная с какого индекса*/
                 container.length - index - 1 /* сколько элементов копируем*/
         );
-        // на последнее место ставим null, чтобы не было утечки памяти (если удаляем последний элемент)
+        /* на последнее место ставим null, чтобы не было утечки памяти (если удаляем последний элемент)*/
         container[container.length - 1] = null;
         return temp;
     }
