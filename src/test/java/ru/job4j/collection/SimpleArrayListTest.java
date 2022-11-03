@@ -49,6 +49,13 @@ class SimpleArrayListTest {
     }
 
     @Test
+    void whenAddToEmpty() {
+        SimpleList<Integer> list2 = new SimpleArrayList<>(0);
+        list2.add(3);
+        assertThat(list2.get(0)).isEqualTo(3);
+    }
+
+    @Test
     void whenAddAndGetByCorrectIndex() {
         list.add(4);
         assertThat(list.get(3)).isEqualTo(4);

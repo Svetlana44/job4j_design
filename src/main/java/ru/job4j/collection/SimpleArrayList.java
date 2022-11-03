@@ -14,14 +14,22 @@ public class SimpleArrayList<T> implements SimpleList<T> {
         this.container = (T[]) new Object[capacity];
     }
 
-    @Override
-    public void add(T value) {
-        modCount++;
-        size++;
-        if (size >= container.length) {
+    private void multiplayCapacity() {
+        if (container.length == 0) {
+            container = Arrays.copyOf(container, 1);
+        } else {
             container = Arrays.copyOf(container, size * 2);
         }
-        container[size - 1] = value;
+    }
+
+    @Override
+    public void add(T value) {
+        if (size >= container.length) {
+            multiplayCapacity();
+        }
+        container[size] = value;
+        size++;
+        modCount++;
     }
 
     @Override
@@ -35,8 +43,6 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     @Override
     public T remove(int index) {
         Objects.checkIndex(index, size);
-        size--;
-        modCount++;
         T temp = container[index];
         System.arraycopy(
                 container, /*откуда копируем*/
@@ -47,6 +53,8 @@ public class SimpleArrayList<T> implements SimpleList<T> {
         );
         /* на последнее место ставим null, чтобы не было утечки памяти (если удаляем последний элемент)*/
         container[container.length - 1] = null;
+        size--;
+        modCount++;
         return temp;
     }
 
@@ -74,25 +82,16 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
             @Override
             public T next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
+                }
+
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
                 }
                 return get(point++);
             }
 
         };
-    }
-
-    public static void main(String[] str) {
-        SimpleList<Integer> simpleList = new SimpleArrayList(3);
-        simpleList.add(1);
-        simpleList.add(2);
-        simpleList.add(3);
-
-        System.out.println(simpleList.size());
-        System.out.println(simpleList.remove(1));
     }
 }
