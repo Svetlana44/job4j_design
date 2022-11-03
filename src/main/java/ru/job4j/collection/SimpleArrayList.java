@@ -89,7 +89,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return get(point++);
+                return container[point++];
             }
 
         };
