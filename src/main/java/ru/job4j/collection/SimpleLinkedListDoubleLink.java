@@ -1,33 +1,33 @@
 package ru.job4j.collection;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
-public class SimpleLinkedList<E> implements LinkedList<E> {
-    Node<E> firstNode = new Node<>(null, null);
-    Node<E> lastNode = new Node<>(null, null);
+public class SimpleLinkedListDoubleLink<E> implements LinkedList<E> {
+    NodeDoubleLink<E> firstNode = new NodeDoubleLink<>(null, null, null);
+    NodeDoubleLink<E> lastNode = new NodeDoubleLink<>(null, null, null);
 
-    Node<E> currentNode;
+    NodeDoubleLink<E> currentNode;
+    List<NodeDoubleLink<E>> list = new ArrayList<>();
 
     private int size = 0;
     private int modCount;
 
-    public SimpleLinkedList() {
+    public SimpleLinkedListDoubleLink() {
         firstNode.next = lastNode;
+        lastNode.prev = firstNode;
     }
 
     @Override
 
     public void add(E value) {
-        Node<E> additionalNode = lastNode;
+        NodeDoubleLink<E> additionalNode = lastNode;
         additionalNode.data = value;
-        lastNode = new Node<>(null, null);
+        lastNode = new NodeDoubleLink<>(null, additionalNode, null);
         additionalNode.next = lastNode;
         currentNode = additionalNode;
         size++;
         modCount++;
+        list.add(additionalNode);
     }
 
     @Override
@@ -49,14 +49,14 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
         return new Iterator<E>() {
 
             int expectedModCount = modCount;
-            Node<E> tempNode = firstNode;
+            int pointer = 0;
 
             @Override
             public boolean hasNext() {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return tempNode.next != null && tempNode.next != lastNode && size != 0;
+                return pointer < size;
             }
 
             @Override
@@ -64,9 +64,8 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                E rsl = tempNode.next.data;
-                tempNode = tempNode.next;
-                return rsl;
+                NodeDoubleLink<E> rsl = list.get(pointer++);
+                return rsl.data;
             }
         };
     }
@@ -75,15 +74,9 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
     public String toString() {
         return "SimpleLinkedList{"
                 + "firstNode=" + firstNode
+                + currentNode
+                + ", lastNode=" + lastNode
                 + "size" + size
                 + '}';
-    }
-
-    public static void main(String[] args) {
-        LinkedList<Integer> list;
-        list = new SimpleLinkedList<>();
-        list.add(1);
-        list.add(2);
-        System.out.println(list);
     }
 }

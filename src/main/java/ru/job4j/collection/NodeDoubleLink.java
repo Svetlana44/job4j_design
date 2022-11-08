@@ -1,11 +1,13 @@
 package ru.job4j.collection;
 
-public class Node<E> {
+public class NodeDoubleLink<E> {
     E data;
-    Node<E> next;
+    NodeDoubleLink<E> prev;
+    NodeDoubleLink<E> next;
 
-    public Node(E data, Node<E> next) {
+    public NodeDoubleLink(E data, NodeDoubleLink<E> prev, NodeDoubleLink<E> next) {
         this.data = data;
+        this.prev = prev;
         this.next = next;
     }
 
@@ -13,7 +15,6 @@ public class Node<E> {
     public String toString() {
         return "Node{"
                 + " data=" + data
-                + "next=" + next
                 + '}';
     }
 }
