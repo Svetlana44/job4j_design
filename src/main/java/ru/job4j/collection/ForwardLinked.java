@@ -23,8 +23,11 @@ public class ForwardLinked<T> implements Iterable<T> {
         if (head == null) {
             throw new NoSuchElementException();
         }
+        Node<T> node = head;
         T rsl = head.value;
         head = head.next;
+        node.next = null;
+        node.value = null;
         return rsl;
     }
 
