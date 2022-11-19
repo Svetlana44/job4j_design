@@ -15,32 +15,35 @@ import java.util.NoSuchElementException;
 public class SimpleQueue<T> {
     private final SimpleStack<T> in = new SimpleStack<>();
     private final SimpleStack<T> out = new SimpleStack<>();
-    private int size = 0;
 
     public T poll() {
-        if (size <= 0) {
+        if (in.isEmpty()) {
             throw new NoSuchElementException();
         }
-        size--;
-        return in.pop();
+        if (out.isEmpty()) {
+            while (!in.isEmpty()) {
+                out.push(in.pop());
+            }
+        }
+        T rsl = out.pop();
+        while (!out.isEmpty()) {
+            in.push(out.pop());
+        }
+        return rsl;
     }
 
     public void push(T value) {
-        in.addLast(value);
-        out.addFirstF(value);
-        size++;
+        in.push(value);
     }
 
     @Override
     public String toString() {
         return "SimpleQueue{" + "in=" + in
-                + ", out=" + out
-                + ", size=" + size + '}';
+                + ", out=" + out + '}';
     }
 
     public static void main(String[] args) {
-        SimpleQueue<Integer> queue;
-        queue = new SimpleQueue<>();
+        SimpleQueue<Integer> queue = new SimpleQueue<>();
         System.out.println(queue);
         queue.push(1);
         System.out.println(queue);
@@ -48,6 +51,9 @@ public class SimpleQueue<T> {
         System.out.println(System.lineSeparator() + queue);
         System.out.println(queue.poll());
         System.out.println(queue);
+        System.out.println(queue.poll());
+        System.out.println(queue);
+
 
     }
 }

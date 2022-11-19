@@ -80,6 +80,10 @@ public class ForwardLinked<T> implements Iterable<T> {
         }
     }
 
+    public boolean isEmpty() {
+        return head == null;
+    }
+
     @Override
     public String toString() {
         return "ForwardLinked|" + "head=" + head + '|';

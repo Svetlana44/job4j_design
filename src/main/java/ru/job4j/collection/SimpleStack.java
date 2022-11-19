@@ -12,17 +12,13 @@ public class SimpleStack<T> {
         linked.addFirst(value);
     }
 
-    public void addLast(T value) {
-
-        linked.add(value);
-    }
-
-    public void addFirstF(T value) {
-        linked.addFirst(value);
-    }
 
     @Override
     public String toString() {
         return "SimpleStack{" + linked + '}';
+    }
+
+    public boolean isEmpty() {
+        return linked.isEmpty();
     }
 }
