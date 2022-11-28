@@ -84,8 +84,39 @@ public class ForwardLinked<T> implements Iterable<T> {
         return head == null;
     }
 
+    public boolean revert() {
+        /* impl reverts of linked list.*/
+        if (this.isEmpty() || this.head == null) {
+            return false;
+        }
+        Node<T> previos = null;
+        Node<T> temp = head;
+        Node<T> next;
+
+        while (temp != null) {
+            next = temp.next;
+            temp.next = previos;
+            previos = temp;
+            temp = next;
+        }
+        head = previos;
+
+        return true;
+    }
+
+
     @Override
     public String toString() {
         return "ForwardLinked|" + "head=" + head + '|';
+    }
+
+    public static void main(String[] str) {
+        ForwardLinked<Integer> fl = new ForwardLinked<>();
+        fl.add(1);
+        fl.add(2);
+        fl.add(3);
+        System.out.println(fl);
+        fl.revert();
+        System.out.println(fl);
     }
 }

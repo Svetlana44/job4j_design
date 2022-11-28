@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ForwardLinkedTest {
     private ForwardLinked<Integer> linked;
+    private ForwardLinked<Integer> linkedRevert;
 
     @BeforeEach
     public void init() {
@@ -19,6 +20,7 @@ class ForwardLinkedTest {
         linked.add(2);
         linked.add(3);
         linked.add(4);
+        linkedRevert = new ForwardLinked<>();
     }
 
     @Test
@@ -77,5 +79,27 @@ class ForwardLinkedTest {
         String expected = "ForwardLinked|head=Node{value=5, next=Node{value=4, next=Node{value=3, next=Node{value=2, next=Node{value=1, next=null}}}}}|";
         assertThat(linked.toString()).isEqualTo(expected);
 
+    }
+
+    @Test
+    void whenSize0ThenReturnFalse() {
+        assertThat(linkedRevert.revert()).isFalse();
+    }
+
+    @Test
+    void whenSize1ThenReturnFalse() {
+        linked.add(1);
+        assertThat(linkedRevert.revert()).isFalse();
+    }
+
+    @Test
+    void whenAddAndRevertTrue() {
+        linkedRevert.add(1);
+        linkedRevert.add(2);
+        linkedRevert.add(3);
+        linkedRevert.add(4);
+        assertThat(linkedRevert).containsSequence(1, 2, 3, 4);
+        assertThat(linkedRevert.revert()).isTrue();
+        assertThat(linkedRevert).containsSequence(4, 3, 2, 1);
     }
 }

@@ -25,7 +25,7 @@ public class SimpleQueue<T> {
                 out.push(in.pop());
             }
         }
-         return out.pop();
+        return out.pop();
     }
 
     public void push(T value) {
