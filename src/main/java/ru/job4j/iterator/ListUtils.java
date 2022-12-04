@@ -50,7 +50,9 @@ public class ListUtils {
     }
 
     public static <T> void removeAll(List<T> list, List<T> elements) {
-        ListIterator<T> listIterator = list.listIterator();
-        removeIf(list, n -> elements.contains(n));
+        /*
+        removeIf(list, n -> elements.contains(n)) заменить на method reference (ссылкой на метод);
+        */
+        removeIf(list, elements::contains);
     }
 }
