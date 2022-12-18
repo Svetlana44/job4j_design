@@ -20,10 +20,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
         if (count >= capacity * LOAD_FACTOR) {
             expand();
         }
-        int index = key == null ? 0 : indexFor(hash(Objects.hashCode(key)));
-        if (table[index] == null) {
+        if (table[index(key)] == null) {
             MapEntry<K, V> mapEntry = new MapEntry<>(key, value);
-            table[index] = mapEntry;
+            table[index(key)] = mapEntry;
             modCount++;
             count++;
             rsl = true;
@@ -39,25 +38,32 @@ public class SimpleMap<K, V> implements Map<K, V> {
         return hash & (table.length - 1);
     }
 
+    private int index(K key) {
+        return key == null ? 0 : indexFor(hash(Objects.hashCode(key)));
+    }
+
     private void expand() {
         capacity *= 2;
         MapEntry<K, V>[] temp = new MapEntry[capacity];
         for (MapEntry<K, V> mapEntry : table) {
             if (mapEntry != null) {
-                int index = mapEntry.key == null ? 0 : indexFor(hash(Objects.hashCode(mapEntry.key)));
-                temp[index] = mapEntry;
+                temp[index(mapEntry.key)] = mapEntry;
             }
         }
         table = temp;
+    }
+
+    private boolean checkEqualKey(K key, K mapEntryKey) {
+        int hashKey = key == null ? 0 : key.hashCode();
+        int hashMapKey = mapEntryKey == null ? 0 : mapEntryKey.hashCode();
+        return hash(hashKey) == hash(hashMapKey) && mapEntryKey == key;
     }
 
     @Override
     public V get(K key) {
         for (MapEntry<K, V> mapEntry : table) {
             if (mapEntry != null) {
-                int hashKey = key == null ? 0 : key.hashCode();
-                int hashMapKey = mapEntry.key == null ? 0 : mapEntry.key.hashCode();
-                if (hash(hashKey) == hash(hashMapKey) && mapEntry.key == key) {
+                if (checkEqualKey(key, mapEntry.key)) {
                     return mapEntry.value;
                 }
             }
@@ -70,11 +76,8 @@ public class SimpleMap<K, V> implements Map<K, V> {
         boolean rsl = false;
         for (MapEntry<K, V> mapEntry : table) {
             if (mapEntry != null) {
-                int hashKey = key == null ? 0 : key.hashCode();
-                int hashMapKey = mapEntry.key == null ? 0 : mapEntry.key.hashCode();
-                if (hash(hashKey) == hash(hashMapKey) && mapEntry.key == key) {
-                    int index = key == null ? 0 : indexFor(hash(Objects.hashCode(key)));
-                    table[index] = null;
+                if (checkEqualKey(key, mapEntry.key)) {
+                    table[index(key)] = null;
                     modCount++;
                     count--;
                     rsl = true;
