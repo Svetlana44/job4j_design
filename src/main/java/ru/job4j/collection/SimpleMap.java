@@ -66,26 +66,24 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public V get(K key) {
-        if (table[index(key)] != null) {
-            if (checkEqualKey(key, table[index(key)].key)) {
-                return table[index(key)].value;
-            }
+        V rsl = null;
+        int index = index(key);
+        if (table[index] != null && checkEqualKey(key, table[index].key)) {
+            rsl = table[index].value;
         }
-        return null;
+        return rsl;
     }
 
     @Override
     public boolean remove(K key) {
         boolean rsl = false;
-        if (table[index(key)] != null) {
-                if (checkEqualKey(key, table[index(key)].key)) {
-                    table[index(key)] = null;
-                    modCount++;
-                    count--;
-                    rsl = true;
-                }
-            }
-
+        int index = index(key);
+        if (table[index] != null && checkEqualKey(key, table[index].key)) {
+            table[index] = null;
+            modCount++;
+            count--;
+            rsl = true;
+        }
         return rsl;
     }
 
@@ -151,6 +149,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
                     + ", value=" + value
                     + '}';
         }
+
     }
 
     @Override
