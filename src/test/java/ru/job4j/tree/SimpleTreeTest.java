@@ -47,7 +47,7 @@ public class SimpleTreeTest {
     void whenDidntAddFind() {
         Tree<Integer> tree = new SimpleTree<>(3);
         assertThat(tree.findBy(3)).isPresent();
-        assertThat(tree.findBy(3).get()).isEqualTo(new Node<Integer>(3));
+        assertThat(tree.findBy(3).get()).isEqualTo(new Node<>(3));
         assertThat(tree.findBy(2)).isNotPresent();
     }
 }
