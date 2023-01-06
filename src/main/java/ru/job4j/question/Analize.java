@@ -1,44 +1,36 @@
 package ru.job4j.question;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 public class Analize {
 
     public static Info diff(Set<User> previous, Set<User> current) {
-        Set<Integer> setIdprevious = new HashSet<>();
-        Set<Integer> setIdcurrent = new HashSet<>();
+        Map<Integer, String> mapPrevious = new HashMap<>();
+        Map<Integer, String> mapCurrent = new HashMap<>();
         for (User user : previous) {
-            setIdprevious.add(user.getId());
+            mapPrevious.put(user.getId(), user.getName());
         }
         for (User user : current) {
-            setIdcurrent.add(user.getId());
+            mapCurrent.put(user.getId(), user.getName());
         }
 
         Info rsl = new Info(0, 0, 0);
-        for (Integer i : setIdprevious) {
-            if (!setIdcurrent.contains(i)) {
+        for (Map.Entry<Integer, String> entry : mapPrevious.entrySet()) {
+            if (!mapCurrent.containsKey(entry.getKey())) {
                 rsl.setDeleted(rsl.getDeleted() + 1);
             }
         }
 
-        for (Integer i : setIdcurrent) {
-            if (!setIdprevious.contains(i)) {
+        for (Map.Entry<Integer, String> entry : mapCurrent.entrySet()) {
+            if (!mapPrevious.containsKey(entry.getKey())) {
                 rsl.setAdded(rsl.getAdded() + 1);
             }
-        }
-
-
-        for (User user : previous) {
-            if (current.contains(user)) {
-                continue;
-            }
-            for (User userCurrent : current) {
-                if (user.getId() == userCurrent.getId() && !Objects.equals(user.getName(), userCurrent.getName())) {
-                    rsl.setChanged(rsl.getChanged() + 1);
-                    break;
-                }
+            if (mapPrevious.containsKey(entry.getKey())
+                    && !Objects.equals(entry.getValue(), mapPrevious.get(entry.getKey()))) {
+                rsl.setChanged(rsl.getChanged() + 1);
             }
         }
         return rsl;
