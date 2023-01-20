@@ -8,9 +8,7 @@
 
 package ru.job4j.io;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,10 +29,24 @@ rsl = bufReader.lines().collect(Collectors.toList());
         return rsl;
     }
 
+    /*
+    out.printf("%s%n", "Some string"); string
+    out.printf("%d%n", 10); decimilar
+    out.printf("%f%n", 1.5f);  float
+     */
+    public static void save(List<String> log, String file) {
+
+        try (PrintWriter pw = new PrintWriter(new BufferedOutputStream(new FileOutputStream(file)))) {
+            log.forEach(string -> pw.printf("%s%n", string));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         LogFilter logFilter = new LogFilter();
         List<String> log = logFilter.filter("data/log.txt");
         log.forEach(str -> System.out.println(log));
-
+        save(log, "data/404.txt");
     }
 }
