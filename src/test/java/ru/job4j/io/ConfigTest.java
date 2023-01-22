@@ -17,14 +17,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class ConfigTest {
     @Test
     void whenPairWithoutComment() {
-        Config config = new Config(".\\data\\pair_without_comment.properties");
+        Config config = new Config("./data/pair_without_comment.properties");
         config.load();
         assertThat(config.value("name")).isEqualTo("Petr Arsentev");
     }
 
     @Test
     void whenPairWithDoubleEquals() {
-        Config config = new Config(".\\data\\pair_with_double_equals.properties");
+        Config config = new Config("./data/pair_with_double_equals.properties");
         config.load();
         assertThat(config.value("name")).isEqualTo("Petr Arsentev=");
         assertThat(config.value("site")).isEqualTo("www.=you");
