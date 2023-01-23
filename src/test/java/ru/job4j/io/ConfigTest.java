@@ -46,4 +46,20 @@ class ConfigTest {
                 .hasMessageContaining("this does breaking pattern");
     }
 
+    @Test
+    void whenBreakingPatternsStartEqual() {
+        Config config = new Config("./data/pair_with_breaking_patterns_start_equal.properties");
+        assertThatThrownBy(config::load)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("string \"=Arsentev\" this does breaking pattern");
+    }
+
+    @Test
+    void whenBreakingPatternsSingleEqual() {
+        Config config = new Config("./data/pair_with_breaking_patterns_single_equal.properties");
+        assertThatThrownBy(config::load)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("string \"=\" this does breaking pattern");
+    }
+
 }

@@ -17,20 +17,20 @@ public class Config {
         this.path = path;
     }
 
+    private boolean peekFilter(String string) {
+        if ((!string.matches(".+=.+")) && (!string.startsWith("#")) && (string.trim().length() != 0)) {
+            throw new IllegalArgumentException("string \"" + string + "\" this does breaking pattern");
+        }
+        return ((string.contains("=")) && !(string.startsWith("#")));
+    }
+
     public void load() {
         try (BufferedReader fileBuf = new BufferedReader(new FileReader(path))) {
-            values = fileBuf.lines().filter(line -> (line.contains("=")) && !(line.contains("#")))
-                    .peek(string -> {
-                        if (!string.matches(".+=.+")) {
-                            throw new IllegalArgumentException("this does breaking pattern");
-                        }
-                    })
+ /*
+ values = fileBuf.lines().filter(string -> peekFilter(string)) можно заменить на method reference    this::peekFilter
+  */
+            values = fileBuf.lines().filter(this::peekFilter)
                     .map(string -> string.split("=", 2))
-                    .peek(arrayStr -> {
-                        if (arrayStr.length < 2) {
-                            throw new IllegalArgumentException();
-                        }
-                    })
                     .collect(Collectors
                             .toMap(str -> str[0], str -> str[1]));
         } catch (IOException e) {
