@@ -28,8 +28,7 @@ public class Analysis {
                 if ((line.startsWith("4") || line.startsWith("5")) && !flag) {
                     flag = true;
                     outWriteFile.write(line.substring(4) + ";");
-                }
-                if (!(line.startsWith("4") || line.startsWith("5")) && flag) {
+                } else if (!(line.startsWith("4") || line.startsWith("5")) && flag) {
                     flag = false;
                     outWriteFile.write(line.substring(4) + ";" + System.lineSeparator());
                 }
