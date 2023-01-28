@@ -25,12 +25,10 @@ public class Analysis {
             boolean flag = false;
             String line;
             while ((line = inReadFile.readLine()) != null) {
-                if ((line.startsWith("4") || line.startsWith("5")) && !flag) {
-                    flag = true;
-                    outWriteFile.write(line.substring(4) + ";");
-                } else if (!(line.startsWith("4") || line.startsWith("5")) && flag) {
-                    flag = false;
-                    outWriteFile.write(line.substring(4) + ";" + System.lineSeparator());
+                String[] log = line.split(" ");
+                if ((Integer.parseInt(log[0]) < 400) == flag) {
+                    flag = !flag;
+                    outWriteFile.write(log[1] + (flag ? ";" : System.lineSeparator()));
                 }
             }
         } catch (IOException e) {
