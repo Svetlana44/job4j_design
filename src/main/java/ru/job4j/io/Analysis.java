@@ -28,7 +28,7 @@ public class Analysis {
                 String[] log = line.split(" ");
                 if ((Integer.parseInt(log[0]) < 400) == flag) {
                     flag = !flag;
-                    outWriteFile.write(log[1] + (flag ? ";" : System.lineSeparator()));
+                    outWriteFile.write(log[1] + (flag ? ";" : (";" + System.lineSeparator())));
                 }
             }
         } catch (IOException e) {
