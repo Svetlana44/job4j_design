@@ -34,13 +34,11 @@ public class SearchFiles implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-        System.out.println("Error" + file.getFileName());
         return CONTINUE;
     }
 
     @Override
     public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-        /*        System.out.println("Exit from : " + dir.getFileName());  */
         return CONTINUE;
     }
 
