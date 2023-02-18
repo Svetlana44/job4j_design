@@ -11,7 +11,7 @@ public class PathExample {
         Path dir = Paths.get("path/paths");
         Files.createDirectories(dir);
         Path path = Path.of("path/paths/path.txt");
-//        Files.createFile(path);
+        /*        Files.createFile(path);  */
         System.out.println("Файл/директория существует?: " + Files.exists(path));
         System.out.println("Это директория?: " + Files.isDirectory(path));
         System.out.println("Это файл?: " + Files.isRegularFile(path));
