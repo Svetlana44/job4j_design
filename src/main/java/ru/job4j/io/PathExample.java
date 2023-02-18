@@ -24,11 +24,11 @@ public class PathExample {
         System.out.println("Доступен для записи?: " + Files.isWritable(path));
 
         /*  файл перемещается из директории paths в директорию path  */
-//        Files.move(path, Path.of("path/path.txt"));
+        Files.move(path, Path.of("path/path.txt"));
 
         /*   Метод Files.delete() в отличие от File.delete() выдаст полезную информацию в виде исключения,
-         если указанный объект не будет удален  (нельзя удалить непустую директорию)*/
-//        Files.delete(dir);
+         если указанный объект не будет удален  (нельзя удалить непустую директорию)
+        Files.delete(dir); */
 
         Path target = Paths.get("path");
         Path path1 = Path.of("path/paths/path1.txt");
