@@ -12,8 +12,8 @@ import java.util.function.Predicate;
 import static java.nio.file.FileVisitResult.CONTINUE;
 
 public class SearchFiles implements FileVisitor<Path> {
-    Predicate<Path> condition;
-    List<Path> paths = new ArrayList<>();
+    private Predicate<Path> condition;
+    private List<Path> paths = new ArrayList<>();
 
     public SearchFiles(Predicate<Path> condition) {
         this.condition = condition;
@@ -21,7 +21,6 @@ public class SearchFiles implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-        System.out.println("Enter to : " + dir.getFileName());
         return CONTINUE;
     }
 
@@ -41,7 +40,7 @@ public class SearchFiles implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-        System.out.println("Exit from : " + dir.getFileName());
+        /*        System.out.println("Exit from : " + dir.getFileName());  */
         return CONTINUE;
     }
 
