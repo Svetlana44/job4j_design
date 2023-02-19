@@ -12,20 +12,20 @@ import java.util.Map;
 import static java.nio.file.FileVisitResult.CONTINUE;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
-    HashMap<String, ArrayList<Path>> paths = new HashMap<>();
+    Map<FileProperty, ArrayList<Path>> paths = new HashMap<>();
 
-    public HashMap<String, ArrayList<Path>> getPaths() {
+    public Map<FileProperty, ArrayList<Path>> getPaths() {
         return paths;
     }
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        if (paths.containsKey(file.getFileName().toString())) {
-            paths.get(file.getFileName().toString()).add(file);
+        if (paths.containsKey(new FileProperty(file.toFile().length(), file.getFileName().toString()))) {
+            paths.get(new FileProperty(file.toFile().length(), file.getFileName().toString())).add(file);
         } else {
             ArrayList<Path> list = new ArrayList<>();
             list.add(file);
-            paths.put(file.getFileName().toString(), list);
+            paths.put(new FileProperty(file.toFile().length(), file.getFileName().toString()), list);
         }
         return CONTINUE;
     }

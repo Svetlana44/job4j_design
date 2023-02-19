@@ -12,7 +12,7 @@ public class DuplicatesFinder {
         duplicatesVisitor.getPaths().forEach(DuplicatesFinder::accept);
     }
 
-    private static void accept(String s, ArrayList<Path> pathsList) {
+    private static void accept(FileProperty fileProperty, ArrayList<Path> pathsList) {
         if (pathsList.size() > 1) {
             pathsList.forEach(p -> System.out.println("" + p + ";  size: " + p.toFile().length()));
         }
