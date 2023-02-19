@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DuplicatesFinder {
     public static void main(String[] args) throws IOException {
@@ -12,7 +13,7 @@ public class DuplicatesFinder {
         duplicatesVisitor.getPaths().forEach(DuplicatesFinder::accept);
     }
 
-    private static void accept(FileProperty fileProperty, ArrayList<Path> pathsList) {
+    private static void accept(FileProperty fileProperty, List<Path> pathsList) {
         if (pathsList.size() > 1) {
             pathsList.forEach(p -> System.out.println("" + p + ";  size: " + p.toFile().length()));
         }
