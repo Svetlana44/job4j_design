@@ -2,7 +2,6 @@ package ru.job4j.io;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -27,12 +26,16 @@ public class Search {
         return searcher.getPaths();
     }
 
-    public static boolean validation(String[] args) {
-        try {
-            java.nio.file.Paths.get(args[0] + args[1]);
-        } catch (InvalidPathException e) {
-            e.printStackTrace();
+    private static void validation(String[] args) {
+        if (args.length != 2) {
+            throw new IllegalArgumentException("Need two arguments.");
         }
-        return true;
+        if (!Files.exists(java.nio.file.Paths.get(args[0]))) {
+            throw new IllegalArgumentException("Directory does not exist.");
+        }
+        if (!(args[1].startsWith(".") && args[1].length() > 1)) {
+            throw new IllegalArgumentException("File not valid.");
+        }
+
     }
 }
