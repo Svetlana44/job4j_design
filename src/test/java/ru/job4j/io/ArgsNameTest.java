@@ -2,7 +2,8 @@ package ru.job4j.io;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ArgsNameTest {
     @Test
@@ -36,11 +37,31 @@ class ArgsNameTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-  /*  @Test
+    @Test
     public void whenEmptyKey() {
-        ArgsName args = ArgsName.of(new String[]{"-=EmptyKey"});
-        assertThatException().isThrownBy(
-                        () -> args.get("-"))
-                .isInstanceOf(IllegalArgumentException.class);
-    }*/
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-=EmptyKey"}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Empty key");
+    }
+
+    @Test
+    public void whenEmptyValue() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-AnyKey="}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Empty value");
+    }
+
+    @Test
+    void whenNoEqual() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-Key:Value"}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("No equal.");
+    }
+
+    @Test
+    void whenNoMinus() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"Key=Value"}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Key mast start with -");
+    }
 }

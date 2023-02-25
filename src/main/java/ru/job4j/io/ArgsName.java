@@ -19,6 +19,9 @@ public class ArgsName {
             throw new IllegalArgumentException("No elements.");
         }
         for (String str : args) {
+            if (!str.contains("=")) {
+                throw new IllegalArgumentException("No equal.");
+            }
             String[] pair = str.split("=", 2);
             validation(pair);
         }
@@ -27,7 +30,7 @@ public class ArgsName {
 
     }
 
-     void validation(String[] pair) {
+    private void validation(String[] pair) {
         for (String str : pair) {
 
             if (!(pair[0].length() > 1)) {
