@@ -26,13 +26,13 @@ public class ArgsName {
 
     private void validation(String[] keyValue) {
 
-        if (!(keyValue.length > 1)) {
+        if (!(keyValue.length == 2)) {
             throw new IllegalArgumentException("No equal.");
         }
-        if (!(keyValue[0].length() > 1)) {
+        if (keyValue[0].substring(1).isEmpty()) {
             throw new IllegalArgumentException("Empty key");
         }
-        if (!(keyValue[1].length() > 0)) {
+        if (keyValue[1].isEmpty()) {
             throw new IllegalArgumentException("Empty value");
         }
         if (!keyValue[0].startsWith("-")) {
