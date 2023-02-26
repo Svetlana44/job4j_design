@@ -37,6 +37,71 @@ class ArgsNameTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
+
+    @Test
+    void whenKeyNotExist() {
+        ArgsName jvm = ArgsName.of(new String[]{"-Xmx=512"});
+        assertThatThrownBy(() -> jvm.get("Xms")).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("That key does not exist.");
+    }
+
+    @Test
+    void whenKeyGetNotExist2() {
+        ArgsName jvm = ArgsName.of(new String[]{"-Xmx=512"});
+        assertThatThrownBy(() -> jvm.get("Xss")).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("That key does not exist.");
+    }
+
+    @Test
+    void whenStringDoesNotContainKeyThenExceptionThrown() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-Xmx=512", "-=?msg=Exit="}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("Empty key");
+    }
+
+    @Test
+    void whenStringDoesNotContainKeyThenExceptionThrown2() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-Xmx=512", "-=?msg=Hello="}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("Empty key");
+    }
+
+    @Test
+    void whenStringDoesNotContainValueThenExceptionThrown() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-Xmx=512", "-request="}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("Empty value");
+    }
+
+    @Test
+    void whenStringDoesNotContainValueThenExceptionThrown2() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-Xmx=512", "-encoding="}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("Empty value");
+    }
+
+    @Test
+    void whenThereNoEqualSignThenExceptionThrown() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-Xmx=512", "-request?msgHello"}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("No equal.");
+    }
+
+    @Test
+    void whenNoHyphenPrefixThenExceptionThrown() {
+        assertThatThrownBy(() -> ArgsName.of(new String[]{"-Xmx=512", "request=?msg=Exit="}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("^.+")
+                .hasMessageContaining("Key mast start with -");
+    }
+
     @Test
     public void whenEmptyKey() {
         assertThatThrownBy(() -> ArgsName.of(new String[]{"-=EmptyKey"}))
