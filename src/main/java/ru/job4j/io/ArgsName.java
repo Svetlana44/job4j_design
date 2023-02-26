@@ -15,31 +15,28 @@ public class ArgsName {
     }
 
     private void parse(String[] args) {
-        validation(args);
         for (String arg : args) {
             String[] keyValue = arg.split("=", 2);
+            validation(keyValue);
+
             values.put(keyValue[0].substring(1), keyValue[1]);
         }
         /* parse args to values. */
     }
 
-    private void validation(String[] args) {
+    private void validation(String[] keyValue) {
 
-        for (String arg : args) {
-            if (!arg.contains("=")) {
-                throw new IllegalArgumentException("No equal.");
-            }
-            String[] keyValue = arg.split("=", 2);
-
-            if (!(keyValue[0].length() > 1)) {
-                throw new IllegalArgumentException("Empty key");
-            }
-            if (!(keyValue[1].length() > 0)) {
-                throw new IllegalArgumentException("Empty value");
-            }
-            if (!keyValue[0].startsWith("-")) {
-                throw new IllegalArgumentException("Key mast start with -");
-            }
+        if (!(keyValue.length > 1)) {
+            throw new IllegalArgumentException("No equal.");
+        }
+        if (!(keyValue[0].length() > 1)) {
+            throw new IllegalArgumentException("Empty key");
+        }
+        if (!(keyValue[1].length() > 0)) {
+            throw new IllegalArgumentException("Empty value");
+        }
+        if (!keyValue[0].startsWith("-")) {
+            throw new IllegalArgumentException("Key mast start with -");
         }
     }
 
