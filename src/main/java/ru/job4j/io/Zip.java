@@ -24,16 +24,17 @@ public class Zip {
         validation(values);
 
         List<Path> paths = Search.search(Paths.get(values.get("d")), e -> e != Paths.get(values.get("e")));
-        for (Path path : paths) {
-            try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(values.get("o"))))) {
+        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(values.get("o"))))) {
+            for (Path path : paths) {
                 zip.putNextEntry(new ZipEntry(path.toFile().getPath()));
                 try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(path.toFile().getPath()))) {
                     zip.write(out.readAllBytes());
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 
     public void packSingleFile(File source, File target) {
