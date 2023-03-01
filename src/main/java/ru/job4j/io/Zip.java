@@ -17,15 +17,10 @@ import java.util.zip.ZipOutputStream;
 
 public class Zip {
 
-    public void packFiles(List<File> sources, File target) {
+    public void packFiles(List<Path> sources, File target) {
 
-        ArgsName argsName = ArgsName.of(new String[]{"-d=C:\\projects\\job4j_design\\src\\main/java/ru/job4j/io/", "-e=.class", "-o=project.zip"});
-        Map<String, String> values = argsName.getValues();
-        validation(values);
-
-        List<Path> paths = Search.search(Paths.get(values.get("d")), e -> e != Paths.get(values.get("e")));
-        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(values.get("o"))))) {
-            for (Path path : paths) {
+        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
+            for (Path path : sources) {
                 zip.putNextEntry(new ZipEntry(path.toFile().getPath()));
                 try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(path.toFile().getPath()))) {
                     zip.write(out.readAllBytes());
@@ -48,7 +43,7 @@ public class Zip {
         }
     }
 
-    private void validation(Map<String, String> map) {
+    private static void validation(Map<String, String> map) {
         if (map.size() != 3) {
             throw new IllegalArgumentException("Need three arguments.");
         }
@@ -69,8 +64,15 @@ public class Zip {
     }
 
     public static void main(String[] args) {
+        ArgsName argsName = ArgsName.of(new String[]{"-d=C:\\projects\\job4j_design\\src\\main/java/ru/job4j/io/", "-e=.class", "-o=project.zip"});
+        validation(argsName.getValues());
+
+        List<Path> paths = Search.search(Paths.get(argsName.getValues().get("d")), e -> e != Paths.get(argsName.getValues().get("e")));
         Zip zip = new Zip();
-        zip.packFiles(new ArrayList<>(),
+        zip.packFiles(paths, new File(argsName.getValues().get("o")));
+
+        Zip zip2 = new Zip();
+        zip2.packFiles(new ArrayList<>(),
                 new File("./1.zip")
         );
     }
