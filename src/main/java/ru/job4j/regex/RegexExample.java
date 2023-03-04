@@ -87,5 +87,12 @@ public class RegexExample {
         Matcher matcher11 = pattern11.matcher(text11);
         String rsl = matcher11.replaceAll("Job4j");
         System.out.println(rsl);
+
+        Pattern pattern12 = Pattern.compile("\\d{2}\\.\\d{2}\\.\\d{4}");
+        String text12 = "24.04.1987 11.11.111111 99.99.99991 99.99.9999 99999999 0000.00.00";
+        Matcher matcher12 = pattern12.matcher(text12);
+        while (matcher12.find()) {
+            System.out.println("Найдено совпадение: " + matcher12.group());
+        }
     }
 }
