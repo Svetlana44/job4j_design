@@ -9,6 +9,8 @@
 package ru.job4j.codirovka;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -20,6 +22,7 @@ public class ConsoleChat {
     private static final String CONTINUE = "продолжить";
     private final String path;
     private final String botAnswers;
+    private List<String> answersList;
 
     public ConsoleChat(String path, String botAnswers) {
         this.path = path;
@@ -28,7 +31,35 @@ public class ConsoleChat {
 
     public void run() {
         System.out.println("Input phrase:");
-        this.saveLog(new ArrayList<>());
+        answersList = readPhrases();
+        List<String> log = new ArrayList<>();
+        try (Scanner in = new Scanner(System.in)) {
+            String phrase;
+            while (in.hasNext()) {
+                phrase = in.nextLine();
+
+                if (phrase.equals(OUT)) {
+                    log.add("закончить");
+                    return;
+                }
+                if (phrase.equals(STOP)) {
+                    log.add("стоп");
+                }
+                if (phrase.equals(CONTINUE)) {
+                    log.add("продолжить");
+                    Random random = new Random();
+                    int coutStr = countString();
+                    int index = random.nextInt(coutStr) + 1;
+                    String botAnswers = answersList.get(index);
+                    log.add(botAnswers);
+                    System.out.println(botAnswers);
+                }
+                if (!(phrase.contains("стоп") || phrase.contains("продолжить"))) {
+                    log.add(phrase);
+                }
+            }
+            this.saveLog(log);
+        }
     }
 
     private List<String> readPhrases() {
@@ -45,39 +76,24 @@ public class ConsoleChat {
     }
 
     private void saveLog(List<String> log) {
-        try (Scanner in = new Scanner(System.in);
-             BufferedWriter bwriter = new BufferedWriter(new FileWriter(botAnswers))
-        ) {
-            String phrase;
-
-            while (in.hasNext()) {
-                phrase = in.nextLine();
-
-                if (phrase.equals(OUT)) {
-                    bwriter.write("закончить" + System.lineSeparator());
-                    /*                    System.exit(0); */
-                    return;
-                }
-                if (phrase.equals(STOP)) {
-                    bwriter.write("стоп" + System.lineSeparator());
-                }
-                if (phrase.equals(CONTINUE)) {
-                    bwriter.write("продолжить" + System.lineSeparator());
-                    Random random = new Random();
-                    List<String> answers = readPhrases();
-                    int index = random.nextInt(8) + 1;
-                    String answer = answers.get(index);
-                    bwriter.write(answer + System.lineSeparator());
-                    System.out.println(answer);
-                    /*                    break; */
-                }
-                if (!(phrase.contains("стоп") || phrase.contains("продолжить"))) {
-                    bwriter.write(phrase + System.lineSeparator());
-                }
+        try (BufferedWriter bwriter = new BufferedWriter(new FileWriter(botAnswers))) {
+            for (String str : log) {
+                bwriter.write(str + System.lineSeparator());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /* найти количество строк в файле */
+    private int countString() {
+        List<String> fileStream = null;
+        try {
+            fileStream = Files.readAllLines(Paths.get(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileStream.size();
     }
 
     public static void main(String[] args) {
