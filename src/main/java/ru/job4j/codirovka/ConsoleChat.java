@@ -38,14 +38,17 @@ public class ConsoleChat {
             while (in.hasNext()) {
                 phrase = in.nextLine();
 
-                if (phrase.equals(OUT)) {
+                if (OUT.equals(phrase)) {
+                    System.out.println(OUT);
                     log.add("закончить");
                     return;
                 }
-                if (phrase.equals(STOP)) {
+                if (STOP.equals(phrase)) {
+                    System.out.println(STOP);
                     log.add("стоп");
                 }
-                if (phrase.equals(CONTINUE)) {
+                if (CONTINUE.equals(phrase)) {
+                    System.out.println(CONTINUE);
                     log.add("продолжить");
                     Random random = new Random();
                     int coutStr = countString();
