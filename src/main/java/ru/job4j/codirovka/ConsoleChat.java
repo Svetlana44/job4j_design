@@ -41,21 +41,24 @@ public class ConsoleChat {
                 if (OUT.equals(phrase)) {
                     System.out.println(OUT);
                     log.add("закончить");
+                    saveLog(log);
                     return;
                 }
                 if (STOP.equals(phrase)) {
                     System.out.println(STOP);
                     log.add("стоп");
+                    saveLog(log);
                 }
                 if (CONTINUE.equals(phrase)) {
                     System.out.println(CONTINUE);
                     log.add("продолжить");
                     Random random = new Random();
                     int coutStr = countString();
-                    int index = random.nextInt(coutStr) + 1;
+                    int index = random.nextInt(coutStr);
                     String botAnswers = answersList.get(index);
                     log.add(botAnswers);
                     System.out.println(botAnswers);
+                    saveLog(log);
                 }
                 if (!(phrase.contains("стоп") || phrase.contains("продолжить"))) {
                     log.add(phrase);
