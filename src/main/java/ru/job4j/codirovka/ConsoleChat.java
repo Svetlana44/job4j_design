@@ -9,8 +9,6 @@
 package ru.job4j.codirovka;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -39,28 +37,27 @@ public class ConsoleChat {
                 phrase = in.nextLine();
 
                 if (OUT.equals(phrase)) {
-                    System.out.println(OUT);
-                    log.add("закончить");
+                    System.out.println(phrase);
+                    log.add(phrase);
                     saveLog(log);
                     return;
                 }
                 if (STOP.equals(phrase)) {
-                    System.out.println(STOP);
-                    log.add("стоп");
+                    System.out.println(phrase);
+                    log.add(phrase);
                     saveLog(log);
                 }
                 if (CONTINUE.equals(phrase)) {
-                    System.out.println(CONTINUE);
-                    log.add("продолжить");
+                    System.out.println(phrase);
+                    log.add(phrase);
                     Random random = new Random();
-                    int coutStr = countString();
-                    int index = random.nextInt(coutStr);
+                    int index = random.nextInt(answersList.size());
                     String botAnswers = answersList.get(index);
                     log.add(botAnswers);
                     System.out.println(botAnswers);
                     saveLog(log);
                 }
-                if (!(phrase.contains("стоп") || phrase.contains("продолжить"))) {
+                if (!(STOP.equals(phrase) || CONTINUE.equals(phrase))) {
                     log.add(phrase);
                 }
             }
@@ -70,7 +67,7 @@ public class ConsoleChat {
 
     private List<String> readPhrases() {
         List<String> answers = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(this.path))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             String str;
             while ((str = bufferedReader.readLine()) != null) {
                 answers.add(str);
@@ -82,24 +79,13 @@ public class ConsoleChat {
     }
 
     private void saveLog(List<String> log) {
-        try (BufferedWriter bwriter = new BufferedWriter(new FileWriter(botAnswers))) {
+        try (PrintStream bwriter = new PrintStream(new FileOutputStream(botAnswers))) {
             for (String str : log) {
-                bwriter.write(str + System.lineSeparator());
+                bwriter.println(str);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /* найти количество строк в файле */
-    private int countString() {
-        List<String> fileStream = null;
-        try {
-            fileStream = Files.readAllLines(Paths.get(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return fileStream.size();
     }
 
     public static void main(String[] args) {
