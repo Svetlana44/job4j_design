@@ -1,0 +1,9 @@
+
+name: Nike age: 19 
+name: Bro age: 20 
+name: Syster age: 21 
+name: Mister age: 22 
+name: name 
+name: Tom 
+name: Jack 
+name: William 
