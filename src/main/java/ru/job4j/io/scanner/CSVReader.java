@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static java.io.File.createTempFile;
@@ -54,10 +55,33 @@ public class CSVReader {
         }
     }
 
+    private static void validation(ArgsName argsName, String[] params) {
+        if (argsName.get("path").isEmpty()) {
+            throw new IllegalArgumentException("Need path.");
+        }
+        if (argsName.get("delimiter").isEmpty()) {
+            throw new IllegalArgumentException("Need delimiter.");
+        }
+        if (argsName.get("out").isEmpty()) {
+            throw new IllegalArgumentException("Need out.");
+        }
+        if (argsName.get("filter").isEmpty()) {
+            throw new IllegalArgumentException("Need filter.");
+        }
+
+        if (!(Files.exists(Paths.get(argsName.get("path"))))) {
+            System.out.println(Paths.get(argsName.get("path")).toFile());
+            throw new IllegalArgumentException("File does not exist.");
+        }
+        if (!((("-out=path").equals(params[2])) || (("-out=stdout").equals(params[2])))) {
+            throw new IllegalArgumentException("Out isn`t correct.");
+        }
+    }
+
     public static void main(String[] args) {
         CSVReader csvReader = new CSVReader();
         try (Scanner input = new Scanner(System.in)) {
-   /* не путать параметр out это вывод в файл или консоль, и out для ArgsName - это файл вывода */
+            /* не путать параметр out это вывод в файл или консоль, и out для ArgsName - это файл вывода */
             String[] pointers = new String[]{
                     "-path=",
                     "-delimiter=",
@@ -78,6 +102,7 @@ public class CSVReader {
                     params[1],
                     "-out=" + target.getAbsolutePath(),
                     params[3]});
+            validation(argsName, params);
             csvReader.handle(argsName);
             String output = params[2].substring(5);
             if (Objects.equals(output, "stdout")) {
