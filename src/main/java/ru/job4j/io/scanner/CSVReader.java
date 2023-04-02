@@ -10,7 +10,6 @@ import ru.job4j.io.ArgsName;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 
@@ -57,24 +56,35 @@ public class CSVReader {
 
     public static void main(String[] args) {
         CSVReader csvReader = new CSVReader();
-        File directory;
-        try {
+        try (Scanner input = new Scanner(System.in)) {
+   /* не путать параметр out это вывод в файл или консоль, и out для ArgsName - это файл вывода */
+            String[] pointers = new String[]{
+                    "-path=",
+                    "-delimiter=",
+                    "-out=",
+                    "-filter="};
+            int point = 0;
+            String[] params = new String[4];
+            for (int i = 0; i < 4; i++) {
+                System.out.println(pointers[i]);
+                params[i] = pointers[i] + input.nextLine();
+            }
+            File directory;
             directory = Files.createTempDirectory("temp").toFile();
             File target = createTempFile("pathOut", "txt", directory);
 
             ArgsName argsName = ArgsName.of(new String[]{
-                    args[0],
-                    args[1],
+                    params[0],
+                    params[1],
                     "-out=" + target.getAbsolutePath(),
-                    args[3]});
+                    params[3]});
             csvReader.handle(argsName);
-            String output = args[2].substring(5);
+            String output = params[2].substring(5);
             if (Objects.equals(output, "stdout")) {
                 System.out.println(Files.readString(target.toPath()));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
