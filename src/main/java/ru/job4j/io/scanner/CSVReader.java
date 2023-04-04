@@ -7,14 +7,12 @@ package ru.job4j.io.scanner;
 
 import ru.job4j.io.ArgsName;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-
-import static java.io.File.createTempFile;
 
 public class CSVReader {
 
@@ -27,12 +25,14 @@ public class CSVReader {
         Map<String, Integer> headers = new HashMap<>();
         boolean flagHeaders = false;
         List<Integer> indexiesFilter = new LinkedList<>();
+        StringBuilder stringBuilder = new StringBuilder();
 
-        try (Scanner scanner = new Scanner(new FileReader(path));
-             FileWriter fileWriter = new FileWriter(out, true)
+        try (Scanner scanner = new Scanner(new FileReader(path))
         ) {
 
             while (scanner.hasNext()) {
+                StringJoiner stringJoiner = new StringJoiner(delimiter);
+
                 String[] str = scanner.nextLine().split(delimiter);
                 /* читает заголовки столбцов, записывает их в массив и составляет LinckedList с индексами используемых столбцов  */
                 if (!flagHeaders) {
@@ -45,69 +45,59 @@ public class CSVReader {
                         indexiesFilter.add(headers.get(s));
                     }
                 }
-                StringJoiner stringJoiner = new StringJoiner(delimiter);
-                indexiesFilter.forEach(i -> stringJoiner.add(str[i]));
-
-                fileWriter.write(stringJoiner + System.lineSeparator());
+                int index = 0;
+                for (int i = 0; i < indexiesFilter.size() - 1; i++) {
+                    stringBuilder.append(str[i]).append(delimiter);
+                    index++;
+                }
+                stringBuilder.append(str[index]);
+                stringBuilder.append(System.lineSeparator());
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        presentation(stringBuilder, out);
     }
 
     private static void validation(ArgsName argsName, String[] params) {
-        if (argsName.get("path").isEmpty()) {
-            throw new IllegalArgumentException("Need path.");
-        }
-        if (argsName.get("delimiter").isEmpty()) {
-            throw new IllegalArgumentException("Need delimiter.");
-        }
-        if (argsName.get("out").isEmpty()) {
-            throw new IllegalArgumentException("Need out.");
-        }
-        if (argsName.get("filter").isEmpty()) {
-            throw new IllegalArgumentException("Need filter.");
-        }
 
         if (!(Files.exists(Paths.get(argsName.get("path"))))) {
-            System.out.println(Paths.get(argsName.get("path")).toFile());
             throw new IllegalArgumentException("File does not exist.");
         }
-        if (!((("-out=path").equals(params[2])) || (("-out=stdout").equals(params[2])))) {
+        if (!((params[2]).contains(".csv") || (("-out=stdout").equals(params[2])))) {
             throw new IllegalArgumentException("Out isn`t correct.");
+        }
+        if (!(("-delimiter=;").equals(params[1]))) {
+            throw new IllegalArgumentException("Demiliter isn`t valid.");
+        }
+    }
+
+    static void presentation(StringBuilder stringBuilder, String out) {
+        if (!out.equals("stdout")) {
+            try {
+                try (FileWriter fileWriter = new FileWriter(out)) {
+                    fileWriter.write(String.valueOf(stringBuilder));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println(stringBuilder);
         }
     }
 
     public static void main(String[] args) {
         CSVReader csvReader = new CSVReader();
-        try (Scanner input = new Scanner(System.in)) {
-            /* не путать параметр out это вывод в файл или консоль, и out для ArgsName - это файл вывода */
-            String[] pointers = new String[]{
-                    "-path=",
-                    "-delimiter=",
-                    "-out=",
-                    "-filter="};
-            int point = 0;
-            String[] params = new String[4];
-            for (int i = 0; i < 4; i++) {
-                System.out.println(pointers[i]);
-                params[i] = pointers[i] + input.nextLine();
-            }
-            File directory;
-            directory = Files.createTempDirectory("temp").toFile();
-            File target = createTempFile("pathOut", "txt", directory);
-
-            ArgsName argsName = ArgsName.of(new String[]{
-                    params[0],
-                    params[1],
-                    "-out=" + target.getAbsolutePath(),
-                    params[3]});
-            validation(argsName, params);
+        ArgsName argsName = ArgsName.of(new String[]{
+                args[0],
+                args[1],
+                args[2],
+                args[3]
+        });
+        validation(argsName, args);
+        try {
             csvReader.handle(argsName);
-            String output = params[2].substring(5);
-            if (Objects.equals(output, "stdout")) {
-                System.out.println(Files.readString(target.toPath()));
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
