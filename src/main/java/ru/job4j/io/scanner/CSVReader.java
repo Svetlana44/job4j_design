@@ -16,7 +16,7 @@ import java.util.*;
 
 public class CSVReader {
 
-    public static void handle(ArgsName argsName) throws Exception {
+    public static void handle(ArgsName argsName) {
         String path = argsName.get("path");
         String delimiter = argsName.get("delimiter");
         String out = argsName.get("out");
@@ -45,12 +45,12 @@ public class CSVReader {
                         indexiesFilter.add(headers.get(s));
                     }
                 }
-                int index = 0;
+                Iterator<Integer> iterator = indexiesFilter.listIterator();
+
                 for (int i = 0; i < indexiesFilter.size() - 1; i++) {
-                    stringBuilder.append(str[i]).append(delimiter);
-                    index++;
+                    stringBuilder.append(str[iterator.next()]).append(delimiter);
                 }
-                stringBuilder.append(str[index]);
+                stringBuilder.append(str[iterator.next()]);
                 stringBuilder.append(System.lineSeparator());
             }
 
@@ -60,15 +60,15 @@ public class CSVReader {
         presentation(stringBuilder, out);
     }
 
-    private static void validation(ArgsName argsName, String[] params) {
+    private static void validation(ArgsName argsName) {
 
         if (!(Files.exists(Paths.get(argsName.get("path"))))) {
             throw new IllegalArgumentException("File does not exist.");
         }
-        if (!((params[2]).contains(".csv") || (("-out=stdout").equals(params[2])))) {
+        if (!((argsName.get("out")).contains(".csv") || (("-out=stdout").equals(argsName.get("out"))))) {
             throw new IllegalArgumentException("Out isn`t correct.");
         }
-        if (!(("-delimiter=;").equals(params[1]))) {
+        if (!((";").equals(argsName.get("delimiter")))) {
             throw new IllegalArgumentException("Demiliter isn`t valid.");
         }
     }
@@ -89,13 +89,8 @@ public class CSVReader {
 
     public static void main(String[] args) {
         CSVReader csvReader = new CSVReader();
-        ArgsName argsName = ArgsName.of(new String[]{
-                args[0],
-                args[1],
-                args[2],
-                args[3]
-        });
-        validation(argsName, args);
+        ArgsName argsName = ArgsName.of(args);
+        validation(argsName);
         try {
             csvReader.handle(argsName);
         } catch (Exception e) {
