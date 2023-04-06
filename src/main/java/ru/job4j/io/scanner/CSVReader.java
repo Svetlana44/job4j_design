@@ -31,7 +31,6 @@ public class CSVReader {
         ) {
 
             while (scanner.hasNext()) {
-                StringJoiner stringJoiner = new StringJoiner(delimiter);
 
                 String[] str = scanner.nextLine().split(delimiter);
                 /* читает заголовки столбцов, записывает их в массив и составляет LinckedList с индексами используемых столбцов  */
@@ -65,10 +64,11 @@ public class CSVReader {
         if (!(Files.exists(Paths.get(argsName.get("path"))))) {
             throw new IllegalArgumentException("File does not exist.");
         }
-        if (!((argsName.get("out")).contains(".csv") || (("-out=stdout").equals(argsName.get("out"))))) {
+        if (!((argsName.get("out")).contains(".csv") || (("stdout").equals(argsName.get("out"))))) {
             throw new IllegalArgumentException("Out isn`t correct.");
         }
-        if (!((";").equals(argsName.get("delimiter")))) {
+        if (!((argsName.get("delimiter").length() == 1)
+                && ((";, ").contains(argsName.get("delimiter"))))) {
             throw new IllegalArgumentException("Demiliter isn`t valid.");
         }
     }
