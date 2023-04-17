@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<ownerIdsByOwnerType>
+    <payments>
+        <payment>
+            <id>1</id>
+            <ownerType>OWNERTYPE</ownerType>
+            <ownerId>11</ownerId>
+            <createdAt>2023-04-16T18:23:59+03:00</createdAt>
+        </payment>
+        <payment>
+            <id>2</id>
+            <ownerType>OWNERTYPE</ownerType>
+            <ownerId>11</ownerId>
+            <createdAt>2023-04-16T18:23:59+03:00</createdAt>
+        </payment>
+        <payment>
+            <id>3</id>
+            <ownerType>OWNERTYPE</ownerType>
+            <ownerId>11</ownerId>
+            <createdAt>2023-04-16T18:23:59+03:00</createdAt>
+        </payment>
+    </payments>
+    <log>any text</log>
+    <id>111</id>
+    <owner name="Jack"/>
+    <flag>true</flag>
+</ownerIdsByOwnerType>
