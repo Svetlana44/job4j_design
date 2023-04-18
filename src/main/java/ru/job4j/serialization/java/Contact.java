@@ -1,13 +1,25 @@
+/*
+ Для того чтобы сериализовать и десериализовать нам нужно добавить аннотации JAXB, которая даст библиотеке информацию о том как парсить объект.
+
+1) Rорневой тег @XmlRootElement. Эту аннотацию нужно ставить над сущностью, которая будет корневой.
+
+2) Над вложенными сущностями нам нужно поставить просто @XmlElement
+
+3) Для того чтобы поле считалось атрибутом нужно поставить  @XmlAttribute, по умолчанию поле парсится как тег
+
+4) Мы можем указать также как мы хотим читать/писать объект.
+По геттерам/сеттерам или напрямую по полям (используется рефлексия).
+Мы будем использовать доступ по полям. Для этих целей служит аннотация @XmlAccessorType
+ */
 package ru.job4j.serialization.java;
 
 import java.io.*;
 import java.nio.file.Files;
 
 public class Contact implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-    private final int zipCode;
-    private final String phone;
+    private static long serialVersionUID = 1L;
+    private int zipCode;
+    private String phone;
 
     public Contact(int zipCode, String phone) {
         this.zipCode = zipCode;

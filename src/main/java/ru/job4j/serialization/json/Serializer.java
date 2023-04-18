@@ -13,7 +13,7 @@ public class Serializer {
         payments[1] = new Payment(2, "OWNER-TYPE", "11", "2023-04-16T18:23:59+03:00");
         payments[2] = new Payment(3, "OWNER-TYPE", "11", "2023-04-16T18:23:59+03:00");
 
-        final OwnerIdsByOwnerType ownerIdsByOwnerType =
+        OwnerIdsByOwnerType ownerIdsByOwnerType =
                 new OwnerIdsByOwnerType(payments, "any text", 111, new Owner("Jack"), true);
 
         final Gson gson = new GsonBuilder().create();
@@ -25,7 +25,7 @@ public class Serializer {
                 + "{\"id\":3,\"ownerType\":\"OWNER-TYPE\",\"ownerId\":\"11\",\"createdAt\":\"2023-04-16T18:23:59+03:00\"}],"
                 + "\"log\":\"any text\",\"id\":111,\"owner\":{\"name\":\"Jack\"},\"flag\":true}";
 
-        final OwnerIdsByOwnerType ownerIdsByOwnerTypeMod = gson.fromJson(jsonOwnerIdsByOwnerType, OwnerIdsByOwnerType.class);
+        OwnerIdsByOwnerType ownerIdsByOwnerTypeMod = gson.fromJson(jsonOwnerIdsByOwnerType, OwnerIdsByOwnerType.class);
         System.out.println(ownerIdsByOwnerTypeMod.toString());
     }
 }

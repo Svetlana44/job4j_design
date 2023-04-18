@@ -1,10 +1,19 @@
 package ru.job4j.serialization.json.model;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 public class Payment {
-    private final int id;
-    private final String ownerType;
-    private final String ownerId;
-    private final String createdAt;
+    @XmlAttribute
+    private int id;
+    @XmlAttribute
+    private String ownerType;
+    @XmlAttribute
+    private String ownerId;
+    @XmlAttribute
+    private String createdAt;
+
+    public Payment() {
+    }
 
     public Payment(int id, String ownerType, String ownerId, String createdAt) {
         this.id = id;
