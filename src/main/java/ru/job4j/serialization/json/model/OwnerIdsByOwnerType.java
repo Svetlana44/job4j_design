@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Arrays;
 
-@XmlRootElement
+@XmlRootElement(name = "ownerIdsByOwnerType")
 public class OwnerIdsByOwnerType {
     @XmlElement
     private Payment[] payments;
