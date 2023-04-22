@@ -19,4 +19,13 @@ public class Owner {
                 + "name='" + name + '\''
                 + '}';
     }
+    /*гетеры для корректной работы с библиотекой  JSON-Java (org.json) */
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

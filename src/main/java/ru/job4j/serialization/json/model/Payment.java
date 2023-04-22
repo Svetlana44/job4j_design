@@ -1,5 +1,7 @@
 package ru.job4j.serialization.json.model;
 
+import org.json.JSONPropertyIgnore;
+
 import javax.xml.bind.annotation.XmlAttribute;
 
 public class Payment {
@@ -30,5 +32,37 @@ public class Payment {
                 + ", ownerId='" + ownerId + '\''
                 + ", createdAt='" + createdAt + '\''
                 + '}';
+    }
+    /*гетеры для корректной работы с библиотекой  JSON-Java (org.json) */
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getOwnerType() {
+        return ownerType;
+    }
+
+    public void setOwnerType(String ownerType) {
+        this.ownerType = ownerType;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }

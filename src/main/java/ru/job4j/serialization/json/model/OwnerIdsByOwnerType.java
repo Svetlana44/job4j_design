@@ -51,6 +51,48 @@ public class OwnerIdsByOwnerType {
                 + ", flag=" + flag
                 + '}';
     }
+
+    /*гетеры для корректной работы с библиотекой  JSON-Java (org.json) */
+
+    public Payment[] getPayments() {
+        return payments;
+    }
+
+    public void setPayments(Payment[] payments) {
+        this.payments = payments;
+    }
+
+    public String getLog() {
+        return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
 }
 /*
 {
