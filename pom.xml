@@ -68,6 +68,14 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
+        <!-- В Java есть несколько библиотек для логгирования: Logback, log4j, System.out.println.
+        Библиотека slf4j позволяет абстрагироваться от конкретных библиотек.
+        Это позволяет придерживаться единого стиля логгирования для проектов. -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.30</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
