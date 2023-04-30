@@ -23,7 +23,7 @@ public class EchoServer {
                     out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                     String str = in.readLine();
                         System.out.println(str);
-                        if (str.contains("GET /?msg=Bye HTTP/1.1")) {
+                        if (str.contains("?msg=Bye")) {
                             server.close();
                             return;
                         }
