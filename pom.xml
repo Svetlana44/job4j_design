@@ -60,6 +60,14 @@
             <artifactId>json</artifactId>
             <version>20200518</version>
         </dependency>
+        <!-- Log4j - библиотека позволяет осуществить логирование процессов в приложении
+         В курсе используется первая версия. Это связано с другой библиотекой slf4j.
+           Log4j имеет версию 2, но slf4j нет. Поэтому, чтобы не потерять совместимость пока используем первую версию log4j -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
