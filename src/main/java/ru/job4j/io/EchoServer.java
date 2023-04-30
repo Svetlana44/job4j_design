@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Objects;
 
 public class EchoServer {
     public static void main(String[] args) throws IOException {
@@ -21,13 +20,18 @@ public class EchoServer {
                      BufferedReader in = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
                     out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
-                    String str = in.readLine();
-                        System.out.println(str);
-                        if (str.contains("?msg=Bye")) {
-                            server.close();
-                            return;
-                        }
 
+                    String str = in.readLine();
+                    System.out.println(str);
+                    if (str.contains("?msg=Exit")) {
+                        server.close();
+                        return;
+                    }
+                    if (str.contains("?msg=Hello")) {
+                        out.write("Hello.".getBytes());
+                    } else {
+                        out.write("What.".getBytes());
+                    }
                     out.flush();
                 }
             }
