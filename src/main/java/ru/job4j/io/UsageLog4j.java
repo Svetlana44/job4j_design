@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public class UsageLog4j {
 
- /* private static final Logger LOG = LogManager.getLogger(UsageLog4j.class.getName());   */
+    /* private static final Logger LOG = LogManager.getLogger(UsageLog4j.class.getName());   */
     private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
 
     public static void main(String[] args) {
@@ -24,5 +24,19 @@ public class UsageLog4j {
         LOG.info("info message");
         LOG.warn("warn message");
         LOG.error("error message");
+
+        String name = "Petr Arsentev";
+        int age = 33;
+        LOG.debug("User info name : {}, age : {}", name, age);
+
+        short s = 1;
+        byte b = 2;
+        int count = 7;
+        long lo = 33L;
+        float fl = 2.3F;
+        double d = 22.33;
+        boolean bool = true;
+        char ch = 'c';
+        LOG.error("Errore in primitive: shotr={}, byte={}, int={}, long={}, float={}, double={}, boolean={}, char={}.", s, b, count, lo, fl, d, bool, ch);
     }
 }
