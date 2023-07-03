@@ -22,12 +22,12 @@ public class JsonUtils {
             return "";
         }
         StringBuilder stringBuilder = new StringBuilder();
-        // открываем соедиение к указанному URL
-        // помощью конструкции try-with-resources
+        /* открываем соедиение к указанному URL
+         помощью конструкции try-with-resources*/
         try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()))) {
 
             String inputLine;
-            // построчно считываем результат в объект StringBuilder
+            /* построчно считываем результат в объект StringBuilder */
             while ((inputLine = in.readLine()) != null) {
                 stringBuilder.append(inputLine);
             }
@@ -37,39 +37,39 @@ public class JsonUtils {
         return stringBuilder.toString();
     }
 
-    // парсим некоторые данные о погоде
+    /* парсим некоторые данные о погоде */
     public static void parseCurrentWeatherJson(String resultJson) {
-        // конвертируем строку с Json в JSONObject для дальнейшего его парсинга
+        /* конвертируем строку с Json в JSONObject для дальнейшего его парсинга */
         JSONObject weatherJsonObject = new JSONObject(resultJson);
 
-        // получаем название города, для которого смотрим погоду
+        /* получаем название города, для которого смотрим погоду */
         System.out.println("Название: " + weatherJsonObject.get("name"));
 
-        // получаем массив элементов для поля weather
+        /* получаем массив элементов для поля weather */
         JSONArray weatherArray = (JSONArray) weatherJsonObject.get("weather");
-        // достаем из массива первый элемент
+        /* достаем из массива первый элемент */
         JSONObject weatherData = (JSONObject) weatherArray.get(0);
 
-        // печатаем текущую погоду в консоль
+        /* печатаем текущую погоду в консоль */
         System.out.println("Погода на данный момент: " + weatherData.get("main"));
-        // и описание к ней
+        /* и описание к ней */
         System.out.println("Более детальное описание погоды: " + weatherData.get("description"));
     }
 
-    // формируем новый JSON объект из нужных нам погодных данных
+    /* формируем новый JSON объект из нужных нам погодных данных */
     public static String buildWeatherJson() {
-        // для простоты примера просто хардкодим нужные данные в методе
+        /* для простоты примера просто хардкодим нужные данные в методе */
         JSONObject jsonObject = new JSONObject();
-        // задаем идентификатор
+        /*  задаем идентификатор */
         jsonObject.put("weather_id", 0);
 
-        // создаем поле с именем
+        /* создаем поле с именем */
         jsonObject.put("name", "Лондон");
 
-        // используем функцию аккумулирования для добавления
-        // элемента к существующему значению. В результате мы получим список значений
+        /* используем функцию аккумулирования для добавления
+         элемента к существующему значению. В результате мы получим список значений */
         jsonObject.accumulate("name", "Англия");
-        // добавляет элемент в уже существующий список
+        /* добавляет элемент в уже существующий список */
         jsonObject.append("name", "(Великобритания)");
 
         // увеличиваем значение на единицу
@@ -78,21 +78,21 @@ public class JsonUtils {
         jsonObject.put("main", "Солнечно");
         jsonObject.put("description", "Мороз трескучий, На небе ни единой тучи");
 
-        // позволяет представить JSON в удобном для HTML виде
+        /* позволяет представить JSON в удобном для HTML виде */
         System.out.println(JSONObject.quote(jsonObject.toString()));
 
         return jsonObject.toString();
     }
 
-    // конвертируем указанный JSONArray в отформатированную строку,
-    // готовую для записи в файл формата CSV
+    /* конвертируем указанный JSONArray в отформатированную строку,
+     готовую для записи в файл формата CSV */
     public static String convertJsonToCsv(String jsonString) {
         JSONObject jsonObject = new JSONObject(jsonString);
 
         return CDL.toString(jsonObject.getJSONArray("weather"));
     }
 
-    // создаем объект URL из указанной в параметре строки
+    /* создаем объект URL из указанной в параметре строки */
     public static URL createUrl(String link) {
         try {
             return new URL(link);
