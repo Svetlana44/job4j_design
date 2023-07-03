@@ -16,22 +16,22 @@ public class MainJsonUtil {
                     + "&units=metric&appid=241de9349721df959d8800c12ca4f1f3";
 
     public static void main(String[] args) {
-        // создаем URL из строки
+        /* создаем URL из строки */
         URL url = JsonUtils.createUrl(WEATHER_URL);
 
-        // загружаем Json в виде Java строки
+        /* загружаем Json в виде Java строки */
         String resultJson = JsonUtils.parseUrl(url);
         System.out.println("\nПолученный JSON:\n" + resultJson);
 
-        // парсим полученный JSON и печатаем его на экран
+        /* парсим полученный JSON и печатаем его на экран */
         JsonUtils.parseCurrentWeatherJson(resultJson);
 
-        // формируем новый JSON объект из нужных нам погодных данных
+        /* формируем новый JSON объект из нужных нам погодных данных */
         String json = JsonUtils.buildWeatherJson();
         System.out.println("\nСозданный нами JSON:\n" + json);
 
-        // преобразуем массив с json содержимым в строку со значениями через запятую
-        // то есть в строку, удобную для сохранения в CSV файл
+        /* преобразуем массив с json содержимым в строку со значениями через запятую
+         то есть в строку, удобную для сохранения в CSV файл */
         String csvString = JsonUtils.convertJsonToCsv(resultJson);
         System.out.println("\nСтрока для CSV файла:\n" + csvString);
     }

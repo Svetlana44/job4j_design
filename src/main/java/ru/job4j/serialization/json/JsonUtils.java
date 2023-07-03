@@ -72,7 +72,7 @@ public class JsonUtils {
         /* добавляет элемент в уже существующий список */
         jsonObject.append("name", "(Великобритания)");
 
-        // увеличиваем значение на единицу
+        /* увеличиваем значение на единицу */
         jsonObject.increment("weather_id");
 
         jsonObject.put("main", "Солнечно");
