@@ -76,6 +76,12 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.30</version>
         </dependency>
+       <!--Для записи данных в файл dbf в Java можно использовать библиотеку Apache POI-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.1.2</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
