@@ -24,19 +24,19 @@ rules_id int references rules(id)
 create table items(
 id serial primary key,
 name varchar(20),
-users_id int references users (id)
+users_id int references users (id),
+comments_id int references comments (id),
+attachs_id int references attachs (id)
 );
 
 create table comments(
 id serial primary key,
-text varchar(100),
-item_id int references items (id)
+text varchar(100)
 );
 
 create table attachs(
 id serial primary key,
-files varchar(50),
-item_id int references items (id)
+files varchar(50)
 );
 
 create table states(
