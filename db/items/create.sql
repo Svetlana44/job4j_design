@@ -1,4 +1,4 @@
-create table users(
+create table users (
 id serial primary key,
 name varchar(20),
 nikename varchar(15)
@@ -7,12 +7,12 @@ nikename varchar(15)
 create table roles(
 id serial primary key,
 name varchar(20),
-users_id int references user (id)
+users_id int references users (id)
 );
 
 create table rules(
 id serial primary key,
-name varchar(20),
+name varchar(20)
 );
 
 create table roles_rules(
@@ -24,8 +24,7 @@ rules_id int references rules(id)
 create table items(
 id serial primary key,
 name varchar(20),
-users_id int references user (id)
-category_id int references categories (id)
+users_id int references users (id)
 );
 
 create table comments(
@@ -49,4 +48,5 @@ item_id int references items (id)
 create table categories(
 id serial primary key,
 name varchar(20),
+category_id int references items (id)
 );
