@@ -8,6 +8,9 @@ items - comments = one-to-many (у заявки есть комментарии)
 items - attachs = one-to-many (у заявки есть приложенные файлы)
 items - categories = many-to-one (у заявки есть категории)
 items - states = many-to-one (у заявки есть состояния)
+
+"users - roles = many-to-one (у пользователя есть роли)"
+ Ссылки references должны быть расположены со стороны many
 */
 
 create table roles(
