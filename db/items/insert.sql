@@ -2,7 +2,7 @@
 Сначала надо заполнять таблицы, в которых нет ссылок.
 */
 
-insert into roles(name,users_id) values ('admin',1);
+insert into roles(name) values ('admin');
 
 insert into rules(name) values ('rwe');
 
