@@ -42,7 +42,7 @@ states_id int references states (id)
 create table comments(
 id serial primary key,
 text varchar(100),
-items_id int references items (id),
+items_id int references items (id)
 );
 
 create table attachs(
