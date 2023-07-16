@@ -1,3 +1,15 @@
+/*
+Связи между таблицами такие:
+
+users - roles = many-to-one (у пользователя есть роли)
+roles - rules = many-to-many (у ролей есть права)
+items - users = many-to-one (у пользователя есть заявки)
+items - comments = one-to-many (у заявки есть комментарии)
+items - attachs = one-to-many (у заявки есть приложенные файлы)
+items - categories = many-to-one (у заявки есть категории)
+items - states = many-to-one (у заявки есть состояния)
+*/
+
 create table roles(
 id serial primary key,
 name varchar(20)
