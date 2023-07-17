@@ -16,8 +16,6 @@ insert into states(name) values ('done');
 
 insert into items(name,users_id,category_id,states_id) values ('itemName',1,1,1);
 
-insert into comments(text,item_id) values ('comment for item',1);
+insert into comments(text,items_id) values ('comment for item',1);
 
-insert into attachs(files,item_id) values ('item.txt',1);
-
-
+insert into attachs(files,items_id) values ('item.txt',1);
