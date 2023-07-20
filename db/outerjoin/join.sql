@@ -44,6 +44,5 @@ where e.id is null;
 select * from departments d left join employees  e on d.id=e.id_departments;
 select d.id,d.name,e.id,e.name,e.id_departments from employees e right join departments  d on d.id=e.id_departments;
 
-select * from teens t1  CROSS JOIN teens t2
-    where t1.gender<>t2.gender;
-
+select * from teens t1  cross join teens t2
+    where t1.gender<>t2.gender and t1.id < t2.id;;
