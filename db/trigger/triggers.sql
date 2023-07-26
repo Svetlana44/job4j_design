@@ -13,39 +13,32 @@ create table history_of_price(
     date timestamp
 );
 
-
-create trigger plus_nalog
-    after insert on products
-    referencing new table as inserted
-    for each statement
-    execute procedure plusn();
-
-create or replace function plusn()
-    return trigger as
+CREATE OR REPLACE FUNCTION  plusn()
+   returns trigger AS
 $$
-         begin
+begin
             update products
             set price = price + price * 0.2
-            where id = (select id from inserted)
+            where id in (select id from inserted);
+
             return new;
-        end;
+end;
 $$
 LANGUAGE 'plpgsql';
 
 create or replace function befor_plusn()
-    return trigger as
+    returns trigger as
 $$
         begin
             update products
             set price = price + price * 0.2
-            where id = (select id from inserted)
+            where id = new.id;
             return new;
         end;
 $$
-LANGUAGE 'plpgsql';
 
 create or replace function add_history_of_price()
-    return trigger as
+    returns trigger as
 $$
         begin
             insert into history_of_price (name,price,date)
@@ -55,6 +48,12 @@ $$
 $$
 LANGUAGE 'plpgsql';
 
+
+create trigger plusn
+    after insert on products
+    referencing new table as inserted
+    for each statement
+    execute procedure plusn();
 
 create trigger befor_plus_nalog
     before insert on products
