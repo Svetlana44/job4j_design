@@ -14,14 +14,12 @@ create table history_of_price(
 );
 
 CREATE OR REPLACE FUNCTION  plusn()
-   returns trigger AS
-$$
-begin
-            update products
-            set price = price + price * 0.2
-            where id in (select id from inserted);
-
-            return new;
+   returns trigger AS $$
+   begin
+update products
+set price = price + price * 0.2
+where id in (select id from inserted);
+return new;
 end;
 $$
 LANGUAGE 'plpgsql';
@@ -30,19 +28,18 @@ create or replace function befor_plusn()
     returns trigger as
 $$
         begin
-            update products
-            set price = price + price * 0.2
-            where id = new.id;
+            new.price = new.price + new.price * 0.2
             return new;
         end;
 $$
+LANGUAGE 'plpgsql';
 
 create or replace function add_history_of_price()
     returns trigger as
 $$
         begin
             insert into history_of_price (name,price,date)
-            values (name,price,current_date)
+            values (new.name,new.price,current_date)
             return new;
         end;
 $$
