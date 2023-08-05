@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class Listerator {
+
     static public void main(String[] args) {
         List<String> list = new ArrayList<>();
 /*        ListIterator listIterator = list.listIterator(); */
