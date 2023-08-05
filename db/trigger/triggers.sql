@@ -28,7 +28,7 @@ create or replace function befor_plusn()
     returns trigger as
 $$
         begin
-            new.price = new.price + new.price * 0.2
+            new.price = new.price + new.price * 0.2;
             return new;
         end;
 $$
@@ -39,7 +39,7 @@ create or replace function add_history_of_price()
 $$
         begin
             insert into history_of_price (name,price,date)
-            values (new.name,new.price,current_date)
+            values (new.name,new.price,current_date);
             return new;
         end;
 $$
