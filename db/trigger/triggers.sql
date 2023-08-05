@@ -45,7 +45,6 @@ $$
 $$
 LANGUAGE 'plpgsql';
 
-
 create trigger plusn
     after insert on products
     referencing new table as inserted
