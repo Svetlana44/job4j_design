@@ -136,6 +136,7 @@ try(FileReader fileReader = new FileReader("data/props.properties")){
 
     public static void main(String[] args) throws Exception {
         TableEditor tableEditor = new TableEditor(new Properties());
+
         tableEditor.initConnection();
         tableEditor.createTable("test");
         tableEditor.getTableScheme("test");
