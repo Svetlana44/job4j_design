@@ -27,20 +27,20 @@ public class RuletFibonachi {
         System.out.println(res);
 
 
-//        Scanner scanner = new Scanner(System.in);
-//
-//        int n = scanner.nextInt();
-//        int e = 0;
-//        int p = 1;
-//
-//        while (p < n) {
-//            e++;
-//            p *= 2;
-//
-//        }
-//        System.out.println(e);
+ /*       Scanner scanner = new Scanner(System.in);
 
+        int n = scanner.nextInt();
+        int e = 0;
+        int p = 1;
 
+        while (p < n) {
+            e++;
+            p *= 2;
+
+        }
+        System.out.println(e);
+
+*/
 
 
     }
