@@ -38,7 +38,7 @@ class TableEditorTest {
     void whenGetTableScheme() throws Exception {
 
         TableEditor tableEditor = new TableEditor(properties);
-        tableEditor.createTable("test");
+        tableEditor.createTable("test2");
         String expected = "------------------------------"
                 + System.lineSeparator()
                 + "NAME           |TYPE           "
@@ -46,7 +46,7 @@ class TableEditorTest {
                 + "------------------------------"
                 + System.lineSeparator();
 
-        String actual = tableEditor.getTableScheme("test");
+        String actual = tableEditor.getTableScheme("test2");
         Assertions.assertThat(expected).isEqualTo(actual);
     }
 
