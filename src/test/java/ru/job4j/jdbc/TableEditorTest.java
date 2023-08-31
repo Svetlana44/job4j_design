@@ -39,9 +39,12 @@ class TableEditorTest {
 
         TableEditor tableEditor = new TableEditor(properties);
         tableEditor.createTable("test");
-        String expected = "------------------------------" + System.lineSeparator() +
-                "NAME           |TYPE           " + System.lineSeparator() +
-                "------------------------------" + System.lineSeparator();
+        String expected = "------------------------------"
+                + System.lineSeparator()
+                + "NAME           |TYPE           "
+                + System.lineSeparator()
+                + "------------------------------"
+                + System.lineSeparator();
 
         String actual = tableEditor.getTableScheme("test");
         Assertions.assertThat(expected).isEqualTo(actual);
