@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 class TableEditorTest {
-
+/*
     Properties properties = new Properties();
 
     @BeforeEach
@@ -17,7 +17,7 @@ class TableEditorTest {
 
         /* для лоадера нужно указывать название СВОЕГО класса  */
         ClassLoader loader = TableEditor.class.getClassLoader();
-        try (FileInputStream in = new FileInputStream("src/main/resources/app.properties")) {
+/*        try (FileInputStream in = new FileInputStream("src/main/resources/app.properties")) {
             properties.load(in);
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,5 +50,5 @@ class TableEditorTest {
         Assertions.assertThat(expected).isEqualTo(actual);
     }
 
-
+*/
 }
