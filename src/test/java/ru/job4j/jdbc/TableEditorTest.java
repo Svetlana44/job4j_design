@@ -16,7 +16,7 @@ class TableEditorTest {
     void connection() {
 
         /* для лоадера нужно указывать название СВОЕГО класса  */
-        ClassLoader loader = TableEditor.class.getClassLoader();
+/*        ClassLoader loader = TableEditor.class.getClassLoader();  */
 /*        try (FileInputStream in = new FileInputStream("src/main/resources/app.properties")) {
             properties.load(in);
         } catch (IOException e) {
