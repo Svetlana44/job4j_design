@@ -59,50 +59,28 @@ try(FileReader fileReader = new FileReader("data/props.properties")){
     }
 
     public void createTable(String tableName) {
-        try (Statement statement = connection.createStatement()) {
-            String creatTableSql = "CREATE TABLE IF NOT EXISTS " + tableName + "()";
-            statement.execute(creatTableSql);
-            System.out.println("Table created.");
-            System.out.println(getTableScheme("test"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        String creatTableSql = "CREATE TABLE IF NOT EXISTS " + tableName + "(); COMMIT;";
+        statementExecute(creatTableSql);
     }
 
     public void dropTable(String tableName) {
-        try (Statement statement = connection.createStatement()) {
-            String dropTableSql = "DROP TABLE IF EXISTS " + tableName;
-            statement.execute(dropTableSql);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
+        String dropTableSql = "DROP TABLE IF EXISTS " + tableName;
+        statementExecute(dropTableSql);
     }
 
-    public void addColumn(String tableName, String columnName, String type) throws SQLException {
-        try (Statement statement = connection.createStatement()) {
-            String addColumnSql = "ALTER TABLE " + tableName + " ADD " + columnName + " " + type + "; COMMIT;";
-            statement.executeUpdate(addColumnSql);
-        }
+    public void addColumn(String tableName, String columnName, String type) {
+        String addColumnSql = "ALTER TABLE " + tableName + " ADD " + columnName + " " + type + "; COMMIT;";
+        statementExecute(addColumnSql);
     }
 
     public void dropColumn(String tableName, String columnName) {
-        try (Statement statement = connection.createStatement()) {
-            String dropColumnSql = "ALTER TABLE " + tableName + " DROP COLUMN " + columnName;
-            statement.execute(dropColumnSql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String dropColumnSql = "ALTER TABLE " + tableName + " DROP COLUMN " + columnName;
+        statementExecute(dropColumnSql);
     }
 
     public void renameColumn(String tableName, String columnName, String newColumnName) {
-        try (Statement statement = connection.createStatement()) {
-            String renameColumnSql = "ALTER TABLE " + tableName + " RENAME COLUMN " + columnName + " TO " + newColumnName + "; COMMIT;";
-            statement.execute(renameColumnSql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String renameColumnSql = "ALTER TABLE " + tableName + " RENAME COLUMN " + columnName + " TO " + newColumnName + "; COMMIT;";
+        statementExecute(renameColumnSql);
     }
 
     public boolean ifExists(String tableName) {
@@ -147,26 +125,35 @@ try(FileReader fileReader = new FileReader("data/props.properties")){
         initConnection();
     }
 
+    public void statementExecute(String statementStr) {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(statementStr);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public static void main(String[] args) throws Exception {
         TableEditor tableEditor = new TableEditor(null);
 
         tableEditor.initConnection();
 
         tableEditor.createTable("test");
-        tableEditor.getTableScheme("test");
+        System.out.println(tableEditor.getTableScheme("test"));
 
         tableEditor.dropTable("test");
         if (tableEditor.ifExists("test")) {
-            tableEditor.getTableScheme("test");
+            System.out.println(tableEditor.getTableScheme("test"));
         }
 
         if (!tableEditor.ifExists("test")) {
             tableEditor.createTable("test");
         }
         tableEditor.addColumn("test", "testColumn", "text");
-        tableEditor.getTableScheme("test");
+        System.out.println(tableEditor.getTableScheme("test"));
 
         tableEditor.renameColumn("test", "testColumn", "testColumn2");
-        tableEditor.getTableScheme("test");
+        System.out.println(tableEditor.getTableScheme("test"));
     }
 }
