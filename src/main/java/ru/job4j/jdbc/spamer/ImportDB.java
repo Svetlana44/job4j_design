@@ -32,16 +32,16 @@ public class ImportDB {
         List<User> users = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             rd.lines().forEach(s -> {
-                        if (s.contains(";")) {
-                            String[] strs = s.split(";", 2);
-                            if (strs.length == 2 && !(strs[0].equals("")) && strs[1].endsWith(";") && !(strs[1].equals(" ;"))) {
-                                users.add(new User(strs[0], strs[1].substring(0, strs[1].length() - 2)));
-                            }
-                        } else {
-                            throw new IllegalArgumentException("Not valid users in the file.");
-                        }
-                    }
-            );
+                if (!s.contains(";")) {
+                    throw new IllegalArgumentException("Not valid users in the file.");
+                }
+                String[] strs = s.split(";", 2);
+                if (strs.length != 2 || strs[0].equals("") || !strs[1].endsWith(";") || strs[1].equals(" ;")) {
+                    throw new IllegalArgumentException("Not valid users in the file.");
+                } else {
+                    users.add(new User(strs[0], strs[1].substring(0, strs[1].length() - 2)));
+                }
+            });
         }
         return users;
     }
@@ -71,6 +71,7 @@ public class ImportDB {
             this.name = name;
             this.email = email;
         }
+
     }
 
     private void createTable(String tableName) throws ClassNotFoundException {
