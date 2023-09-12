@@ -68,7 +68,7 @@ try(FileReader fileReader = new FileReader("data/props.properties")){
         statementExecute(dropTableSql);
     }
 
-    public void addColumn(String tableName, String columnName, String type) {
+    public void addColumn(String tableName, String columnName, String type)  {
         String addColumnSql = "ALTER TABLE " + tableName + " ADD " + columnName + " " + type + "; COMMIT;";
         statementExecute(addColumnSql);
     }
