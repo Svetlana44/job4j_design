@@ -2,7 +2,6 @@ package ru.job4j.iterator;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 public class NonNullIterator implements Iterator<Integer> {
 
@@ -16,10 +15,10 @@ public class NonNullIterator implements Iterator<Integer> {
     @Override
     public boolean hasNext() {
 
-        while (index < data.length - 1 && !(Optional.ofNullable(data[index]).isPresent())) {
+        while (index < data.length - 1 && data[index] == null) {
             index++;
         }
-        return index < data.length && Optional.ofNullable(data[index]).isPresent();
+        return index < data.length && data[index] != null;
     }
 
     @Override
