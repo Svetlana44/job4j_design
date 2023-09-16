@@ -6,11 +6,14 @@ import java.util.List;
 
 public class Balancer {
     public static void split(List<ArrayList<Integer>> nodes, Iterator<Integer> source) {
+        int index = 0;
         while (source.hasNext()) {
-            for (ArrayList<Integer> arrayList : nodes) {
-                if (source.hasNext()) {
-                    arrayList.add(source.next());
-                }
+            ArrayList<Integer> arrayList = nodes.get(index);
+            arrayList.add(source.next());
+            if (index < nodes.size() - 1) {
+                index++;
+            } else {
+                index = 0;
             }
         }
     }
