@@ -1,0 +1,3 @@
+C:\projects\job4j_design\src\main\java\findfilescreterias\FindFilesCreterias.java
+C:\projects\job4j_design\src\main\java\findfilescreterias\FindVisitor.java
+C:\projects\job4j_design\src\main\java\findfilescreterias\outWithParams.txt
