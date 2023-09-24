@@ -15,103 +15,56 @@
  */
 package findfilescreterias;
 
+import ru.job4j.io.ArgsName;
+import ru.job4j.io.Search;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FindFilesCreterias {
 
-    static Map<String, String> params = new HashMap<>();
+//    static Map<String, String> params = new HashMap<>();
 
-    static String d;
-    static String n;
-    static String t;
-    static String o;
+    public static boolean paramsValidation(ArgsName argsName) {
 
-    public static boolean paramsValidation(String parametr) {
-        if (Objects.equals(parametr, "d")) {
-            if (!(Files.isDirectory(Path.of(params.get("d"))))) {
-                System.out.println("parametr d is NOT valid.");
-                return false;
-            }
-            System.out.println("d= " + params.get("d"));
+        String parametrd = argsName.get("d");
+        String parametrn = argsName.get("n");
+        String parametrt = argsName.get("t");
+        String parametro = argsName.get("o");
+
+        if (!(Files.isDirectory(Path.of(parametrd)))) {
+            throw new IllegalArgumentException("parametr d is NOT valid.");
         }
-        if (Objects.equals(parametr, "n")) {
-            Pattern pattern = Pattern.compile(".*\\..*");
-            Matcher matcher = pattern.matcher(params.get("n"));
-            if (!(matcher.matches())) {
-                System.out.println("parametr n is NOT valid.");
-                return false;
-            }
-            System.out.println("n= " + params.get("n"));
+        System.out.println("d= " + parametrd);
+
+        Pattern pattern = Pattern.compile(".*\\..*");
+        Matcher matcher = pattern.matcher(parametrn);
+        if (!(matcher.matches())) {
+            throw new IllegalArgumentException("parametr n is NOT valid.");
         }
-        if (Objects.equals(parametr, "t")) {
-            if (!("mask name regex ".contains(params.get("t")))) {
-                System.out.println("parametr t is NOT valid.");
-                return false;
-            }
-            System.out.println("t= " + params.get("t"));
+        System.out.println("n= " + parametrn);
+
+        if (!("mask name regex ".contains(parametrt))) {
+            throw new IllegalArgumentException("parametr t is NOT valid.");
         }
-        if (Objects.equals(parametr, "o")) {
-            if (!(Files.isRegularFile(Path.of(params.get("o"))))) {
-                System.out.println("parametr o is NOT valid.");
-                return false;
-            }
-            System.out.println("o= " + params.get("o"));
+        System.out.println("t= " + parametrt);
+
+        if (!(Files.isRegularFile(Path.of(parametro)))) {
+            throw new IllegalArgumentException("parametr o is NOT valid.");
         }
+        System.out.println("o= " + parametro);
         return true;
     }
 
-    public static void input() {
-        System.out.println("Директоря, в которой начинать поиск:");
-        Scanner scannerIn = new Scanner(System.in);
-        if (scannerIn.hasNextLine()) {
-            d = scannerIn.nextLine();
-            params.put("d", d);
-            if (!paramsValidation("d")) {
-                return;
-            }
-        }
-        System.out.println("Имя файла, маска, либо регулярное выражение:");
-        if (scannerIn.hasNextLine()) {
-            n = scannerIn.nextLine();
-            params.put("n", n);
-            if (!paramsValidation("n")) {
-                return;
-            }
 
-        }
-        System.out.println("Тип поиска: "
-                + System.lineSeparator()
-                + "mask искать по маске,"
-                + System.lineSeparator()
-                + "name по полному совпадение имени, "
-                + System.lineSeparator()
-                + "regex по регулярному выражению.");
-        if (scannerIn.hasNextLine()) {
-            t = scannerIn.nextLine();
-            params.put("t", t);
-            if (!paramsValidation("t")) {
-                return;
-            }
-
-        }
-        if (scannerIn.hasNextLine()) {
-            /*        o = "C:\\projects\\job4j_design\\src\\main\\java\\findfilescreterias\\outWithParams.txt";  */
-            params.put("o", o);
-            if (!paramsValidation("o")) {
-                return;
-            }
-
-        }
-
-    }
-
-    public static void writeIntoFile(List<Path> files) {
+    public static void writeIntoFile(List<Path> files, String o) {
         try (FileWriter out = new FileWriter(o)) {
             files.forEach(s -> {
                 try {
@@ -125,11 +78,33 @@ public class FindFilesCreterias {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        input();
-        FindVisitor findVisitor = new FindVisitor(t);
-        Files.walkFileTree(Path.of(d), findVisitor);
-        writeIntoFile(findVisitor.files);
+    public static Predicate<Path> predicatParam(String searchType, String name) {
+        Predicate<Path> predicate = path -> !Objects.equals(path, path);
+        if (searchType.equals("mask")) {
+            predicate = path -> {
+                String nameOfFile = String.valueOf(path.getFileName());
+                int index = nameOfFile.indexOf('.');
+                String mask = nameOfFile.substring(index);
+                return Objects.equals("*" + mask, name);
+            };
+        }
+        if (searchType.equals("name")) {
+            predicate = path -> (path.getFileName().toString()).equals(name);
+        }
+
+        if (searchType.equals("regex")) {
+            predicate = path -> Pattern.compile(name).matcher(path.getFileName().toString()).matches();
+        }
+
+        return predicate;
     }
 
+    public static void main(String[] args) throws IOException {
+        /* parse args into Map<String, String> values*/
+        ArgsName argsName = ArgsName.of(args);
+        paramsValidation(argsName);
+        Predicate<Path> predicate = predicatParam(argsName.get("t"), argsName.get("n"));
+
+        writeIntoFile(Search.search(Path.of(argsName.get("d")), predicate), argsName.get("o"));
+    }
 }

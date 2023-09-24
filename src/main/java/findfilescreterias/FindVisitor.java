@@ -14,9 +14,11 @@ public class FindVisitor implements FileVisitor<Path> {
 
     public List<Path> files = new ArrayList<>();
     public String paramSearch;
+    public String n;
 
-    public FindVisitor(String paramSearch) {
+    public FindVisitor(String paramSearch, String n) {
         this.paramSearch = paramSearch;
+        this.n = n;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class FindVisitor implements FileVisitor<Path> {
         String file = path.getFileName().toString();
 
         if (paramSearch.equals("name")) {
-            if (file.equals(FindFilesCreterias.n)) {
+            if (file.equals(n)) {
                 files.add(path);
                 result = true;
             }
@@ -45,13 +47,13 @@ public class FindVisitor implements FileVisitor<Path> {
             String nameOfFile = String.valueOf(path.getFileName());
             int index = nameOfFile.indexOf('.');
             String mask = nameOfFile.substring(index);
-            if (Objects.equals("*" + mask, FindFilesCreterias.n)) {
+            if (Objects.equals("*" + mask, n)) {
                 files.add(path);
                 result = true;
             }
         }
         if (paramSearch.equals("regex")) {
-            Pattern pattern = Pattern.compile(FindFilesCreterias.n);
+            Pattern pattern = Pattern.compile(n);
             if (pattern.matcher(file).matches()) {
                 files.add(path);
                 result = true;
@@ -73,7 +75,7 @@ public class FindVisitor implements FileVisitor<Path> {
 
     public static void main(String[] args) throws IOException {
         Path start = Paths.get(".");
-        Files.walkFileTree(start, new FindVisitor("name"));
+        Files.walkFileTree(start, new FindVisitor("name", "FindVisitor.java"));
 
     }
 }
