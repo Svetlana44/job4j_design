@@ -30,8 +30,6 @@ import java.util.regex.Pattern;
 
 public class FindFilesCreterias {
 
-//    static Map<String, String> params = new HashMap<>();
-
     public static boolean paramsValidation(ArgsName argsName) {
 
         String parametrd = argsName.get("d");
