@@ -80,7 +80,7 @@ public class FindFilesCreterias {
         if (searchType.equals("mask")) {
             predicate = path -> {
                 int index = name.indexOf('.');
-                String mask = "." + name.substring(0, index) + "\\." + name.substring(index + 1);
+                String mask = name.replaceAll("\\.", "[.]").replaceAll("\\*", ".*").replaceAll("\\?", ".");
 
                 return Pattern.compile(mask).matcher(path.getFileName().toString()).matches();
             };
