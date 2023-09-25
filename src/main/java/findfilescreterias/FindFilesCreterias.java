@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 
 public class FindFilesCreterias {
 
-    public static boolean paramsValidation(ArgsName argsName) {
+    private static void paramsValidation(ArgsName argsName) {
 
         String parametrd = argsName.get("d");
         String parametrn = argsName.get("n");
@@ -58,11 +58,10 @@ public class FindFilesCreterias {
             throw new IllegalArgumentException("parametr o is NOT valid.");
         }
         System.out.println("o= " + parametro);
-        return true;
     }
 
 
-    public static void writeIntoFile(List<Path> files, String o) {
+    private static void writeIntoFile(List<Path> files, String o) {
         try (FileWriter out = new FileWriter(o)) {
             files.forEach(s -> {
                 try {
@@ -76,14 +75,14 @@ public class FindFilesCreterias {
         }
     }
 
-    public static Predicate<Path> predicatParam(String searchType, String name) {
+    private static Predicate<Path> predicatParam(String searchType, String name) {
         Predicate<Path> predicate = path -> !Objects.equals(path, path);
         if (searchType.equals("mask")) {
             predicate = path -> {
-                String nameOfFile = String.valueOf(path.getFileName());
-                int index = nameOfFile.indexOf('.');
-                String mask = nameOfFile.substring(index);
-                return Objects.equals("*" + mask, name);
+                int index = name.indexOf('.');
+                String mask = "." + name.substring(0, index) + "\\." + name.substring(index + 1);
+
+                return Pattern.compile(mask).matcher(path.getFileName().toString()).matches();
             };
         }
         if (searchType.equals("name")) {
@@ -98,6 +97,9 @@ public class FindFilesCreterias {
     }
 
     public static void main(String[] args) throws IOException {
+        if (args.length < 4) {
+            throw new IllegalArgumentException("Количество аргументов должно быть 4.");
+        }
         /* parse args into Map<String, String> values*/
         ArgsName argsName = ArgsName.of(args);
         paramsValidation(argsName);
