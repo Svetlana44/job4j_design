@@ -16,7 +16,8 @@ public class EchoServer {
     public static void main(String[] args) {
 
         try (ServerSocket server = new ServerSocket(9000)) {
-            /* 9000 - порт. По умолчанию адрес будет localhost. */
+            /* 9000 - порт. По умолчанию адрес будет localhost.
+            * http://localhost:9000/?msg=Hello набрать в браузере*/
             while (!server.isClosed()) {
             /* метод accept() заставляет программу ждать подключений по указанному порту,
              работа программы продолжится только после подключения клиента.
